@@ -5,7 +5,7 @@ var
     nbchaine : string;
 
 // Saisie
-// fonction de saisie du nombre … afficher, r‚pŠte la saisie jusqu'… ce que l'utilisateur donne un nombre compris entre 0 et 1 milliard
+// fonction de saisie du nombre à afficher, répète la saisie jusqu'à ce que l'utilisateur donne un nombre compris entre 0 et 1 milliard
 // Retourne le nombre saisi
 function Saisie : real;
 var 
@@ -27,8 +27,8 @@ begin
 end;
 
 //Decoupage
-// permet de placer dans un tableau les chiffres (jusqu'aux centiŠmes) du nombre en entr‚e arrondi au centiŠme
-// IN : nombre = le nombre … d‚couper
+// permet de placer dans un tableau les chiffres (jusqu'aux centièmes) du nombre en entrée arrondi au centième
+// IN : nombre = le nombre à découper
 // OUT : ent = tableau qui stocke les chiffres de nombre
 procedure Decoupage(nombre : real; var ent : array of integer) ;
 var 
@@ -36,7 +36,7 @@ var
     nbentier : Int64;
 begin
 	initab(ent);
-	nbentier := round(nombre*100);    // on multiplie nombre par 100 pour faire passer les centiŠmes dans la partie entiŠre et on arrondi … l'nbentier le plus proche (permet de rŠgler les approximations dues au type r‚el)
+	nbentier := round(nombre*100);    // on multiplie nombre par 100 pour faire passer les centièmes dans la partie entière et on arrondi à l'nbentier le plus proche (permet de règler les approximations dues au type réel)
 	i := 10;
 	repeat
         ent[i] := nbentier mod 10;
@@ -139,7 +139,7 @@ end;
 
    end;
    
-      //--------------------------------------------------------------------------------------------------------------------------------	 Proc'dure de conversion pour les unit‚s
+      //--------------------------------------------------------------------------------------------------------------------------------	 Proc'dure de conversion pour les unités
    procedure unite (i : integer; var let : array of string ; var ent : array of integer; var refu : array of string); 	 
    
     begin
@@ -171,12 +171,12 @@ end;
                     dizaine(i, let, ent, refd);
                 	i := i + 3;                                                                                         // on saute de 3 pour accrocher que les dizaines de chaque triplet
                 end;	
-        //*****************cas des unit‚s	 (hors de la virgule)
+        //*****************cas des unités	 (hors de la virgule)
             i := 2;
             while i <= 8 do
             begin
                 unite(i, let, ent, refu);
-                i := i + 3;                                                                                             // on saute de 3 pour accrocher que les unit‚s de chaque triplet
+                i := i + 3;                                                                                             // on saute de 3 pour accrocher que les unités de chaque triplet
             end;
         //*****************cas des centimes     
   	 	dizaine(9, let, ent, refd);                                                                             
@@ -193,9 +193,9 @@ begin
 	f_lettrification(let, ent, refu, refd);
 end;
 // GestionMillions
-// Assemble la chaŒne correspondant aux millions, en respectant les rŠgles de fran‡ais
-// IN : let = le tableau contenant les chaŒnes qui correspondent aux chiffres du nombre saisi pas l'utilisateur
-// OUT :  millions = chaŒne qui correspond aux millions
+// Assemble la chaîne correspondant aux millions, en respectant les règles de français
+// IN : let = le tableau contenant les chaînes qui correspondent aux chiffres du nombre saisi pas l'utilisateur
+// OUT :  millions = chaîne qui correspond aux millions
 
 procedure GestionMillions(var let : array of string ; var millions : string);
 begin 
@@ -208,9 +208,9 @@ begin
 end;
 
 // GestionMilliers
-// Assemble la chaŒne correspondant aux milliers, en respectant les rŠgles de fran‡ais
-// IN : let = le tableau contenant les chaŒnes qui correspondent aux chiffres du nombre saisi pas l'utilisateur
-// OUT :  milliers = chaŒne qui correspond aux milliers
+// Assemble la chaîne correspondant aux milliers, en respectant les règles de français
+// IN : let = le tableau contenant les chaînes qui correspondent aux chiffres du nombre saisi pas l'utilisateur
+// OUT :  milliers = chaîne qui correspond aux milliers
 
 procedure GestionMilliers(var let : array of string ; var milliers : string);
 begin 
@@ -223,9 +223,9 @@ begin
 end;
 
 // GestionUnites
-// Assemble la chaŒne correspondant aux unites, en respectant les rŠgles de fran‡ais
-// IN : let = le tableau contenant les chaŒnes qui correspondent aux chiffres du nombre saisi pas l'utilisateur
-// OUT :  unites = chaŒne qui correspond aux unit‚s
+// Assemble la chaîne correspondant aux unites, en respectant les règles de français
+// IN : let = le tableau contenant les chaînes qui correspondent aux chiffres du nombre saisi pas l'utilisateur
+// OUT :  unites = chaîne qui correspond aux unités
 
 procedure GestionUnites(var let : array of string ; var unites : string);
 begin 
@@ -248,21 +248,8 @@ begin
         else if unites = '' then
             euros := 'zero euro ';
     end;
-    if unites = '' then
-    begin
-    	if (milliers = '') then
-    	begin
-    		if (millions <> '') then
-            begin
-                Delete(millions, length(millions), 1);
-                euros := ' d''euros '
-            end;
-        end
-        else
-            Delete(milliers, length(milliers), 1);
-    end
-    else
-        Delete(unites, length(unites), 1);
+    if (unites = '') and (milliers = '') and (millions <> '') then
+        euros := ' d''euros '
 end;
 
 // GestionCentimes
@@ -283,14 +270,15 @@ begin
     end;
 end;
 
+
 // Assemblage
-// Assemble les chaŒnes du tableau pour obtenir les chaŒnes … afficher
-// IN : let = le tableau contenant les chaŒnes qui correspondent aux chiffres du nombre saisi pas l'utilisateur
-// OUT :  millions = chaŒne qui correspond aux millions
- // milliers = chaŒne qui correspond aux milliers
- // unites = chaŒne qui correspond aux unites (3 premiers chiffres avant la virgule)
+// Assemble les chaînes du tableau pour obtenir les chaînes à afficher
+// IN : let = le tableau contenant les chaînes qui correspondent aux chiffres du nombre saisi pas l'utilisateur
+// OUT :  millions = chaîne qui correspond aux millions
+ // milliers = chaîne qui correspond aux milliers
+ // unites = chaîne qui correspond aux unites (3 premiers chiffres avant la virgule)
  // euros = prend les valeurs 'euros', 'euro' ou 'zero euro' selon les cas
-// centimes = chaŒne qui correspond aux centimes
+// centimes = chaîne qui correspond aux centimes
 
 procedure Assemblage(var let : array of string ; var  nbchaine : string);
 var 
@@ -299,9 +287,11 @@ begin
     GestionMillions(let, millions);
     GestionMilliers(let, milliers);
     GestionUnites(let, unites);
+    nbchaine := millions + milliers + unites;
+    Delete(nbchaine, length(nbchaine), 1);
     GestionEuros(millions, milliers, unites, euros);
     GestionCentimes(let, centimes);
-    nbchaine := millions + milliers + unites + euros + centimes;
+    nbchaine := nbchaine + euros + centimes;
 end;
 
 procedure Conversion(nombre : real ; var nbchaine : string);
