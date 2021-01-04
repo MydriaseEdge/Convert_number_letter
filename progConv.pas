@@ -3,7 +3,7 @@ program leprog;
 var
     nombre : real;                                                                                                       // nombre saisi par l'utilisateur
     nbchaine : string;
-
+ //--------------------------------------------------------------------------------------------------------------------------------	  
 // Saisie
 // fonction de saisie du nombre Ã  afficher, rÃ©pÃ¨te la saisie jusqu'Ã  ce que l'utilisateur donne un nombre compris entre 0 et 1 milliard
 // Retourne le nombre saisi
@@ -17,6 +17,11 @@ begin
     until((nombre < 1000000000) and (nombre >= 0));
     saisie := nombre;
 end;
+ //--------------------------------------------------------------------------------------------------------------------------------	  
+ //init_let
+// permet d'initailiser le tableau qui va recevoir le nombre en chiffre
+// IN : tableau d'entier
+// OUT : tableau d'entiers initialis‚
 
 procedure initab(var ent : array of integer);
 var
@@ -26,6 +31,7 @@ begin
         ent[i] := 0;
 end;
 
+ //--------------------------------------------------------------------------------------------------------------------------------	  
 //Decoupage
 // permet de placer dans un tableau les chiffres (jusqu'aux centiÃ¨mes) du nombre en entrÃ©e arrondi au centiÃ¨me
 // IN : nombre = le nombre Ã  dÃ©couper
@@ -45,6 +51,11 @@ begin
 	until (nbentier = 0);
 end;
 
+ //--------------------------------------------------------------------------------------------------------------------------------	  
+ //init_let
+// permet d'initailiser le tableau qui va recevoir le nombre en chaine de caractŠre
+// IN : tableau de chaines
+// OUT : tableau de chaines initialis‚
 
  procedure init_let (var  tab : array of string);          
  var i : integer;                                                  
@@ -54,8 +65,12 @@ end;
         	tab[i] :=''
         end;	
   end;	
- //-------------------------------------------------------------------------------------------------------------------------------- Proc'dure d'initialisation de la table de r'f'rence des unit's
-  procedure reference_unites (var  tab : array of string);                                                            // laisser l'espace . la fin des strings
+ //--------------------------------------------------------------------------------------------------------------------------------
+ //reference_unit‚s
+// permet de remplir la table de ref‚rence pour les unit‚s
+// IN : tableau vierge
+// OUT : tableau rempli
+  procedure reference_unites (var  tab : array of string);                                                           
   begin   
   	tab[0] := '';
   	tab[1] := 'un-';
@@ -80,8 +95,12 @@ end;
   	
   end;	
   	
- //-------------------------------------------------------------------------------------------------------------------------------- Proc'dure d'initialisation de la table de r'f'rence des dizaines
- procedure reference_dizaines (var  tab : array of string);                                                            // laisser l'espace . la fin des strings
+ //-------------------------------------------------------------------------------------------------------------------------------- 
+ //reference_dizaines
+// permet de remplir la table de ref‚rence pour les dizaines
+// IN : tableau vierge
+// OUT : tableau rempli
+ procedure reference_dizaines (var  tab : array of string);                                                            
   begin   
   	tab[0] := '';
   	tab[1] := 'dix-';                                                                                                              
@@ -95,7 +114,12 @@ end;
   	tab[9] := 'quatre-vingt-dix-';
   	
   end;	
-   //--------------------------------------------------------------------------------------------------------------------------------	 Proc'dure de conversion dans le cas d'une centaine
+ //--------------------------------------------------------------------------------------------------------------------------------	
+ //Centaine
+// permet de determiner quelle chaine de caractŠre associer au chiffre des centaines
+// IN : index dans le tableau du nombre en chiffre, tableau du nombre en chiffre, tableau du nombre en chaine, tableau de r‚f‚rence 
+// OUT : tableau du nombre en chaine compl‚t‚
+
    procedure centaine (i : integer; var let : array of string ; var ent : array of integer; var refu : array of string); 	 
    begin
         if ent[i] <> 1 then                                                                                 
@@ -119,7 +143,12 @@ end;
                 let[i] := 'cent-';
             end;   
    end;
-   //--------------------------------------------------------------------------------------------------------------------------------	 Proc'dure de conversion dans le cas d'une dizaine =! 1x , 7x; 9x
+ //--------------------------------------------------------------------------------------------------------------------------------	
+ //Dizaines
+// permet de determiner quelle chaine de caractŠre associer au chiffre des dizaines
+// IN : index dans le tableau du nombre en chiffre, tableau du nombre en chiffre, tableau du nombre en chaine, tableau de r‚f‚rence 
+// OUT : tableau du nombre en chaine compl‚t‚
+
    procedure dizaine (i : integer; var let : array of string ; var ent : array of integer; var refd : array of string); 	 
    
     begin
@@ -130,7 +159,7 @@ end;
             end;
       	if (ent[i] = 8) and ((i = 1) or (i = 7) or (i = 9)) and (ent[i+1] = 0) then                                                                          
              begin
-                let[i] := 'quatre-vingts ';
+                let[i] := 'quatre-vingts-';
               end
         else   
             begin
@@ -139,7 +168,11 @@ end;
 
    end;
    
-      //--------------------------------------------------------------------------------------------------------------------------------	 Proc'dure de conversion pour les unitÃ©s
+ //--------------------------------------------------------------------------------------------------------------------------------	
+//Unit‚
+// permet de determiner quelle chaine de caractŠre associer au chiffre des unit‚s
+// IN : index dans le tableau du nombre en chiffre, tableau du nombre en chiffre, tableau du nombre en chaine, tableau de r‚f‚rence 
+// OUT : tableau du nombre en chaine compl‚t‚
    procedure unite (i : integer; var let : array of string ; var ent : array of integer; var refu : array of string); 	 
    
     begin
@@ -151,7 +184,12 @@ end;
             let[i] := refu[ent[i]];
    end;
    
-  //--------------------------------------------------------------------------------------------------------------------------------	 	
+  //--------------------------------------------------------------------------------------------------------------------------------	
+ //f_letrification
+// permet de determiner quelle fonction utiliser pour remplir le tableau en chaines de caractŠre en fonction de la position du chiffre dans le nombre
+// IN : i tableau du nombre en chiffre, tableau du nombre en chaine, tableaux de r‚f‚rence 
+// OUT : tableau du nombre en chaine compl‚t‚ 	
+
  procedure f_lettrification (var let : array of string ; var ent : array of integer; var refu : array of string; var  refd : array of string); 	 	
   	var
   	 i : integer;
@@ -182,7 +220,13 @@ end;
   	 	dizaine(9, let, ent, refd);                                                                             
   	 	unite(10, let, ent, refu);
     end;		
-    
+ //--------------------------------------------------------------------------------------------------------------------------------	  
+ //Lettrification
+// permet de remplir le tableau du nombre en chaine de caractŠre avec une version pr‚-assembl‚e
+// IN : tableau du nombre en chiffre, tableau du nombre en chaine
+// OUT : tableau du nombre en chaine compl‚t‚ 
+
+
 procedure lettrification(var let : array of string ; var ent : array of integer);
 var
     refu : array[0..20] of string;                                                                                //r'f'rences pour les unit's ('tendues)
@@ -192,6 +236,8 @@ begin
 	reference_dizaines(refd);
 	f_lettrification(let, ent, refu, refd);
 end;
+
+ //--------------------------------------------------------------------------------------------------------------------------------	  
 // GestionMillions
 // Assemble la chaÃ®ne correspondant aux millions, en respectant les rÃ¨gles de franÃ§ais
 // IN : let = le tableau contenant les chaÃ®nes qui correspondent aux chiffres du nombre saisi pas l'utilisateur
@@ -207,6 +253,7 @@ begin
         millions := concat(millions, 'millions-');
 end;
 
+ //--------------------------------------------------------------------------------------------------------------------------------	  
 // GestionMilliers
 // Assemble la chaÃ®ne correspondant aux milliers, en respectant les rÃ¨gles de franÃ§ais
 // IN : let = le tableau contenant les chaÃ®nes qui correspondent aux chiffres du nombre saisi pas l'utilisateur
@@ -221,7 +268,7 @@ begin
     else if milliers <> ''  then 
         milliers := concat(milliers, 'mille-');
 end;
-
+ //--------------------------------------------------------------------------------------------------------------------------------	  
 // GestionUnites
 // Assemble la chaÃ®ne correspondant aux unites, en respectant les rÃ¨gles de franÃ§ais
 // IN : let = le tableau contenant les chaÃ®nes qui correspondent aux chiffres du nombre saisi pas l'utilisateur
@@ -232,7 +279,7 @@ begin
     unites := concat(let[6], let[7]);
     unites := concat(unites, let[8]);                // assemble le triplet, pas besoin de faire autre chose pour unites
 end;
-
+ //--------------------------------------------------------------------------------------------------------------------------------	  
 // GestionEuros
 // Affecte une valeur Ã  la variable euros en respectant les rÃ¨gles de franÃ§ais
 // IN : let = le tableau contenant les chaÃ®nes qui correspondent aux chiffres du nombre saisi pas l'utilisateur
@@ -251,7 +298,7 @@ begin
     if (unites = '') and (milliers = '') and (millions <> '') then
         euros := ' d''euros '
 end;
-
+ //--------------------------------------------------------------------------------------------------------------------------------	  
 // GestionCentimes
 // Assemble la chaÃ®ne correspondant aux centimes, en respectant les rÃ¨gles de franÃ§ais
 // IN : let = le tableau contenant les chaÃ®nes qui correspondent aux chiffres du nombre saisi pas l'utilisateur
@@ -270,7 +317,7 @@ begin
     end;
 end;
 
-
+ //--------------------------------------------------------------------------------------------------------------------------------	  
 // Assemblage
 // Assemble les chaÃ®nes du tableau pour obtenir les chaÃ®nes Ã  afficher
 // IN : let = le tableau contenant les chaÃ®nes qui correspondent aux chiffres du nombre saisi pas l'utilisateur
@@ -293,6 +340,11 @@ begin
     GestionCentimes(let, centimes);
     nbchaine := nbchaine + euros + centimes;
 end;
+ //--------------------------------------------------------------------------------------------------------------------------------	  
+ // Conversion
+ // procedure principale, permet de convertir le nombre entr‚ en chiffres en version en toutes lettres
+// IN : tableau du nombre en chiffre
+// OUT : nombre en chaine de caractŠre
 
 procedure Conversion(nombre : real ; var nbchaine : string);
 var
@@ -304,7 +356,9 @@ begin
 	Assemblage(let, nbchaine);
 end;
 
-
+ //--------------------------------------------------------------------------------------------------------------------------------	  
+ //Programme principal
+ 
 begin
     nombre := Saisie();
     Conversion(nombre, nbchaine);
